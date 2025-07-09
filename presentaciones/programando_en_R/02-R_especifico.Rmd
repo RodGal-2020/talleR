@@ -1,0 +1,105 @@
+---
+title: "RStudio y RMarkdown" 
+subtitle: "Aprende R" 
+author: "Xopre Rodríguez Gallego" 
+date: "`r format(Sys.time(), '%d de %B de %Y')`" 
+codification: "UTF-8" 
+output: 
+  rmdformats::material: 
+    highlight: kate
+---
+
+# 1. Introducción a RStudio
+
+RStudio es un entorno de desarrollo integrado (IDE) diseñado específicamente para R. Proporciona una interfaz fácil de usar que facilita la programación, el análisis de datos, y la creación de documentos reproducibles.
+
+## 1.1. La Interfaz de RStudio
+
+La ventana principal de RStudio se divide en varios paneles clave:
+
+- **Panel de Scripts/Editor**: Es donde puedes escribir y editar tu código R o archivos `.Rmd`.
+- **Consola**: Donde se ejecuta el código R directamente.
+- **Entorno**: Muestra variables, funciones y datasets cargados.
+- **Archivos/Gráficos/Paquetes**: Panel multifuncional donde puedes gestionar tu proyecto.
+
+# 2. Uso de R en análisis de datos
+
+R se utiliza ampliamente en análisis estadístico. Esta sección explora comandos clave combinados con lo aprendido en Estadística/Matemáticas.
+
+## 2.1 Instalación y carga de paquetes
+
+```{r}
+# Instalar paquetes (solo una vez)
+# install.packages("dplyr")
+# install.packages("skimr")
+
+# Cargar paquetes
+library(dplyr)
+library(skimr)
+```
+
+## 2.2 Exploración de datos
+
+```{r}
+data(iris) # Cargamos el conjunto de datos iris
+
+# summary: resumen estadístico básico
+summary(iris)
+
+# glimpse: resumen estructurado
+library(dplyr)
+glimpse(iris)
+
+# skim: resumen enriquecido (si está instalado)
+library(skimr)
+skim(iris)
+```
+
+## 2.3 Prueba estadística básica
+
+Vamos a realizar una prueba t de diferencia de medias para comprobar si la longitud del sépalo difiere entre dos especies de flores.
+
+```{r}
+# Filtrar dos especies
+setosa <- iris$Sepal.Length[iris$Species == "setosa"]
+versicolor <- iris$Sepal.Length[iris$Species == "versicolor"]
+
+# Prueba t
+t.test(setosa, versicolor)
+```
+
+# 3. R Markdown (Resumen)
+
+R Markdown permite combinar código R con texto en un solo documento. Puedes compilar informes en HTML, PDF o Word directamente desde RStudio.
+
+## 3.1 Estructura básica
+
+````markdown
+  ---
+  title: "Mi Informe"
+  output: html_document
+  ---
+  
+  # Introducción
+  
+  Este es un documento R Markdown.
+  
+  ```{r}
+  summary(cars)
+  ```
+````
+
+## 3.2 Ventajas
+
+- Documentación reproducible
+- Integración de análisis y texto
+- Automatización de informes
+
+## 3.3 Salidas posibles
+
+- HTML
+- PDF (requiere LaTeX)
+- WORD
+- Presentaciones (PowerPoint, Beamer, ioSlides)
+- Blogs (`Rpubs`, `blogdown`)
+- Libros (`Bookdown`)

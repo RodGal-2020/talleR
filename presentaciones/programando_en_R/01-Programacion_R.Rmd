@@ -13,6 +13,17 @@ output:
 
 Este documento contiene ejemplos básicos comentados sobre cómo programar en R, desde la creación de variables hasta la visualización de datos. Está diseñado para ayudar a principiantes a entender la sintaxis y las estructuras comunes en R.
 
+# Comparativa con MATLAB y Python
+
+| Elemento         | R                       | Python                   | MATLAB                 |
+|------------------|--------------------------|--------------------------|-------------------------|
+| Asignación       | `x <- 1` o `x = 1`       | `x = 1`                  | `x = 1`                 |
+| Indexación       | `x[1]` (1-based)         | `x[0]` (0-based)         | `x(1)` (1-based)        |
+| Paquetes         | `library()`             | `import`                | `addpath`, `toolbox`   |
+| Gráficas         | `plot()`                 | `matplotlib.pyplot`      | `plot()`                |
+
+---
+
 # 1. Variables y Tipos de Datos
 
 ```{r}
@@ -29,174 +40,187 @@ print(nombre)
 print(logico)
 ```
 
-**Comentario:** R usa el operador `=` para asignar valores a variables, aunque también se puede usar `=`.
+**Comentario:** R usa el operador `=` o `<-` para asignar valores.
 
-# 2. Operaciones Básicas
+# 2. Vectores
+
+```{r}
+# Crear un vector
+v <- c(1, 2, 3, 4, 5)
+```
+
+En R, todas las funciones están vectorizadas por defecto, y es una metodología que se busca en funciones definidas por usuarios.
+
+```{r}
+# Operaciones con vectores
+doble <- v * 2
+cuadrado <- v^2
+
+# Acceder a elementos
+primero <- v[1]
+subconjunto <- v[2:4]
+```
+
+# 3. Operaciones Básicas
 
 ```{r}
 # Suma, resta, multiplicación, división
 a = 5
 b = 2
 
-suma = a + b        # Suma
-resta = a - b       # Resta
-multiplicacion = a * b  # Multiplicación
-division = a / b    # División
-
-# Operaciones con cadenas
-saludo = paste("Hola", nombre) # Combina cadenas de texto
-
-# Imprimir resultados
-print(suma)
-print(resta)
-print(multiplicacion)
-print(division)
-print(saludo)
+suma = a + b
+resta = a - b
+producto = a * b
+division = a / b
 ```
 
-**Comentario:** `paste()` se utiliza para concatenar cadenas de texto.
-
-# 3. Estructuras de Control
-
-## 3.1 Condicionales (if/else)
+Si ahora usamos vectores, obtenemos resultados semejantes:
 
 ```{r}
-edad = 18
+# Operaciones con vectores
+v1 <- 1:5 # Vector de 1 a 5, para cambiar el paso hace falta seq()
+v2 = seq(1, 10, by=2) # Vector de 1 a 10 con paso de 2
 
-if (edad >= 18) {
-  print("Eres mayor de edad")
-} else {
-  print("Eres menor de edad")
-}
+v1 * v2
+v1 / v2
 ```
 
-**Comentario:** La estructura `if/else` se utiliza para tomar decisiones en función de una condición.
-
-## 3.2 Bucles (
-
-### 3.3 for
+Si nos equivocamos con las dimensiones, R intenta hacer lo que puede, pero siempre nos da un aviso.
 
 ```{r}
-# Imprimir números del 1 al 5 usando un bucle for
-for (i in 1:5) {
-  print(i)
-}
+v1[1:2] / v2
 ```
 
-**Comentario:** `for` se usa para repetir un bloque de código un número determinado de veces.
-
-### 3.4 while
+En este caso para hacer el cálculo repite al vector `v2` una y otra vez.
 
 ```{r}
-# Imprimir números del 1 al 5 usando un bucle while
-i = 1
-while (i <= 5) {
-  print(i)
-  i = i + 1
-}
+length(v1)
 ```
 
-**Comentario:** `while` se usa para repetir un bloque de código mientras se cumpla una condición.
-
-## 3.3 Funciones
+# 4. Funciones
 
 ```{r}
-# Definir una función para calcular el cuadrado de un número
-cuadrado = function(x) {
+# Definición de una función
+cuadrado <- function(x) {
   return(x^2)
 }
 
-# Llamar a la función
-resultado = cuadrado(4)
-print(resultado)
+# Uso
+cuadrado(4)
 ```
 
-**Comentario:** Las funciones en R se definen usando `function()` y se pueden devolver valores con `return()`.
-
-# 4. Manejo de Datos con data.frame
+## Alcance (Scope) de una Función
 
 ```{r}
-# Crear un data frame
-datos = data.frame(
-  nombre = c("Ana", "Luis", "Pedro"),
-  edad = c(23, 35, 28),
-  ciudad = c("Madrid", "Barcelona", "Valencia")
+mi_funcion <- function() {
+  local_var <- 10
+  return(local_var)
+}
+
+mi_funcion()
+# print(local_var)  # Esto dará error: fuera del alcance
+```
+
+# 5. Matrices y Tablas
+
+```{r}
+# Matriz
+mat <- matrix(1:9, nrow=3, ncol=3)
+
+# Tabla (data frame)
+tabla <- data.frame(
+  Nombre = c("Ana", "Luis"),
+  Edad = c(23, 31)
 )
 
-# Imprimir el data frame
-print(datos)
+mat
+print(tabla)
 
-# Acceder a una columna
-print(datos$nombre)
-
-# Filtrar filas
-print(datos[datos$edad > 25,])
+dim(mat)
+dim(tabla)
 ```
 
-**Comentario:** Los `data.frame` son estructuras de datos tabulares muy utilizadas en R.
-
-# 5. Visualización de Datos con ggplot2
-
-```{r, message=FALSE, warning=FALSE}
-# Instalar y cargar la librería ggplot2 (descomentar la línea si es necesario)
-# install.packages("ggplot2")
-library(ggplot2)
-
-# Crear un conjunto de datos de ejemplo
-df = data.frame(
-  x = 1:10,
-  y = c(3, 5, 2, 8, 7, 6, 9, 4, 10, 5)
-)
-
-# Crear un gráfico de dispersión
-ggplot(df, aes(x = x, y = y)) +
-  geom_point() +
-  ggtitle("Gráfico de dispersión")
-```
-
-**Comentario:** La librería `ggplot2` se usa para crear gráficos de alta calidad de manera sencilla. Veremos ejemplos reales más adelante, pero si sientes curiosidad puedes mirar [aquí](https://r-graph-gallery.com/ggplot2-package.html).
-
-# Conclusión
-
-Este documento muestra algunos ejemplos básicos sobre cómo programar en R. A medida que adquieras más experiencia, puedes explorar funciones más avanzadas y bibliotecas especializadas en R para realizar análisis de datos más complejos.
-
-> **Nota adicional**: El 95% de este documento fue generado por ChatGPT. Del 5% restante, el 4% lo escribió GitHub Copilot.
-
-# Ejercicios
-
-A continuación se proponen algunos ejercicios para ganar soltura programando en R:
-
-## Múltiplos de 3 o 5
-
-Este es el problema 1 del [Proyecto Euler](https://projecteuler.net/archives). 
-
-Si listamos todos los números naturales menores que 10 que son múltiplos de 3 o 5, obtenemos 3, 5, 6 y 9. La suma de estos múltiplos es 23. Encuentra la suma de todos los múltiplos de 3 o 5 menores que 1000.
+# 6. Procesamiento de Texto
 
 ```{r}
-# Escribe tu solución aquí
+cadena <- "Hola Mundo"
+
+sub("Mundo", "R", cadena)  # Reemplazo
 ```
 
-## Fibonacci
-
-Este es el problema 2 del [Proyecto Euler](https://projecteuler.net/archives).
-
-Cada nuevo término en la secuencia de Fibonacci se genera sumando los dos términos anteriores. Comenzando con 1 y 2, los primeros 10 términos serían:
-
-$$1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ...$$
-
-Al considerar los términos en la secuencia de Fibonacci cuyos valores no exceden los cuatro millones, encuentra la suma de los términos pares.
-
 ```{r}
-# Escribe tu solución aquí
+nchar(cadena)       # Número de caracteres
+toupper(cadena)     # A mayúsculas
 ```
 
-## Palíndromos
-
-Este es el problema 4 del [Proyecto Euler](https://projecteuler.net/archives).
-
-Un palíndromo es un número que se lee igual al derecho y al revés. El número palíndromo más grande obtenido al multiplicar dos números de dos dígitos es 9009 = 91 × 99. Encuentra el palíndromo más grande obtenido al multiplicar dos números de tres dígitos.
+# 7. Condicionales
 
 ```{r}
-# Escribe tu solución aquí
+x <- 10
+
+# if
+if (x > 5) {
+  print("Mayor que 5")
+}
+
+# if-else
+if (x %% 2 == 0) {
+  print("Par")
+} else {
+  print("Impar")
+}
+
+# if-elseif-else
+if (x < 0) {
+  print("Negativo")
+} else if (x == 0) {
+  print("Cero")
+} else {
+  print("Positivo")
+}
+```
+
+## Operadores lógicos
+
+```{r}
+TRUE & FALSE  # AND
+TRUE | FALSE  # OR
+!TRUE         # NOT
+```
+
+# 8. Bucles
+
+```{r}
+# for
+for (i in 1:5) {
+  print(i^2)
+}
+
+# while
+contador <- 1
+while (contador <= 5) {
+  print(contador)
+  contador <- contador + 1
+}
+```
+
+# 9. Funciones auxiliares
+
+Para la visualización, puede ser útil conocer `cat()` y `paste()` o `paste0()`:
+
+```{r}
+for (i in 1:5) {
+  cat("El cuadrado de", i, "es", i^2, "\n")
+}
+
+for (i in 1:5) {
+  mensaje <- paste("El cuadrado de", i, "es", i^2)
+  print(mensaje)
+}
+
+for (i in 1:5) {
+  mensaje <- paste0("El cuadrado de ", i, " es ", i^2)
+  print(mensaje)
+}
 ```
 

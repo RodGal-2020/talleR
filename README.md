@@ -4,7 +4,7 @@ Curso introductorio en R para presentarlo en un día.
 
 Ocasiones en las que ha sido empleado:
 
-- *Introducción exprés a R - Curso en EDAN*, 15/07/2025.
+- *Introducción exprés a R - Curso en EDAN*, 15/07/2025, `2025EDAN07`.
 
 ## Instalación
 
@@ -21,26 +21,28 @@ Se encuentra separado por carpetas, todas dentro de la carpeta `contenido/`.
 
 ### `programando_en_R/`
 
-- [ ] Comparativa con Matlab y con Python
-- [ ] Ejemplos de uso de:
-	- [ ] Vectores
-	- [ ] Vectores
-	- [ ] Operaciones básicas
-	- [ ] Funciones
-		- [ ] Alcance (*scope*) de una función
-	- [ ] Matrices/Tablas
-	- [ ] Procesamiento de texto (Cadenas de caracteres)
-	- [ ] Condicionales (if, ifelse, ifelseif)
-	- [ ] Bucles (for, while)
-- [ ] Uso específico de R (1 clase o media, incluyendo summary y alguna prueba estadística, combinada con lo visto en Estadística/Matemáticas)
-	- [ ] Instalación de paquetes
-	- [ ] Funciones summary, glimpse y/o skim
-	- [ ] Pruebas estadísticas
-	- [ ] R Markdown
+- `01-Programacion_R`
+  - Comparativa con Matlab y con Python
+  - Ejemplos de uso de:
+  	- Vectores
+  	- Vectores
+  	- Operaciones básicas
+  	- Funciones
+  		- Alcance (*scope*) de una función
+  	- Matrices/Tablas
+  	- Procesamiento de texto (Cadenas de caracteres)
+  	- Condicionales (if, ifelse, ifelseif)
+  	- Bucles (for, while)
+- `02-R_especifico`
+  > **2025EDAN07** - 1 clase o media, pensando en combinarla con lo visto en Estadística/Matemáticas)
+	- Instalación de paquetes
+	- Funciones summary, glimpse y/o skim
+	- Pruebas estadísticas
+	- R Markdown
 
 ### `tidyverse/`
 
-- Pensado para 4 horas de clase únicamente, empleando un CSV con datos reales
+- Pensado para 4 horas de clase únicamente, empleando un CSV con datos reales
 - Objetivos: Repetir y extender lo visto en Calc/Excel
 - Clase 1 (2h):
 	- [ ] Instalación de paquetes
@@ -55,7 +57,7 @@ Se encuentra separado por carpetas, todas dentro de la carpeta `contenido/`.
 
 ### `modelos_matematicos/`
 
-Este añadido está pensado específicamente para el curso impartido el 15/07/2025 en el Departamento de Ecuaciones Diferenciales y Análisis Numérico (EDAN) de la Universidad de Sevilla.
+Este añadido está pensado específicamente para el curso impartido el 15/07/2025 en el Departamento de Ecuaciones Diferenciales y Análisis Numérico (EDAN) de la Universidad de Sevilla, codificado como `2025EDAN07`.
 
 - [ ] Modelos discretos
 	- [ ] Puntos de equilibrio
