@@ -1,0 +1,500 @@
+---
+title: "ggplot2"
+subtitle: "Aprende R"
+author: "Xopre Rodríguez Gallego"
+date: "`r format(Sys.time(), '%d de %B de %Y')`"
+codification: "UTF-8"
+output:
+  # Cambia los comentarios si quieres usar el otro formato
+  # rmdformats::material:
+  #   highlight: kate
+  ioslides_presentation:
+    widescreen: true # Wider form factor
+    transition: slower # default
+    notes: true # Show notes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+## Visualización de Datos con ggplot2
+
+En este caso buscamos aprender a visualizar datos de forma efectiva y atractiva, recurriendo al paquete `ggplot2`.
+
+```{r, message=FALSE, echo=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggplot2)
+```
+
+## Visualización sin `ggplot2`
+
+Sin emplear este paquete es posible obtener multitud de visualizaciones de los datos con los que trabajamos, por defecto como tabla o lista.
+
+```{r}
+head(iris)
+```
+
+## Visualización sin `ggplot2`
+
+```{r}
+summary(iris)
+```
+
+## Visualización sin `ggplot2`
+
+```{r}
+glimpse(iris)
+```
+
+## Visualización sin `ggplot2`
+
+Con el paquete `skimr` podemos obtener un resumen más detallado de los datos.
+
+```{r, eval=FALSE}
+skimr::skim(iris)
+```
+
+## Visualización sin `ggplot2` - `plot()`
+
+También podemos generar gráficos con la función `plot()`, del entorno base.
+
+```{r}
+plot(iris)
+```
+
+## Visualización sin `ggplot2` - `plot()`
+
+Podemos generar también visualizaciones más complejas y controladas con esta función:
+
+```{r}
+plot(iris$Sepal.Length, iris$Sepal.Width, col=iris$Species)
+```
+
+## Visualización sin `ggplot2` - `plot()`
+
+```{r, eval = FALSE}
+plot(
+  iris$Sepal.Length, iris$Sepal.Width, 
+  col = as.numeric(iris$Species), # Convertir las especies a valores numéricos
+  type = "p", 
+  main = "Relación entre Sepal.Length y Sepal.Width",
+  xlab = "Sepal Length",
+  ylab = "Sepal Width",
+  pch = 19 # Cambiar la forma de los puntos para diferenciarlos
+)
+```
+
+## Visualización sin `ggplot2` - `plot()`
+
+```{r, echo = FALSE}
+plot(
+  iris$Sepal.Length, iris$Sepal.Width, 
+  col = as.numeric(iris$Species), # Convertir las especies a valores numéricos
+  type = "p", 
+  main = "Relación entre Sepal.Length y Sepal.Width",
+  xlab = "Sepal Length",
+  ylab = "Sepal Width",
+  pch = 19 # Cambiar la forma de los puntos para diferenciarlos
+)
+```
+
+# *The Grammar of Graphics*
+
+## *The Grammar of Graphics*
+
+`ggplot2` es un paquete de visualización que se basa en el concepto de *The Grammar of Graphics*, desarrollado por Leland Wilkinson. En él, se establece que cualquier gráfico puede ser descompuesto en una serie de componentes, que se pueden combinar de forma flexible. Así, se pueden crear gráficos complejos a partir de componentes más sencillos.
+
+> **Nota**: En `ggplot2` sustituimos el operador tubería (`%>%`) por el operador `+`.
+
+## Capa 01
+
+```{r}
+ggplot(data = iris)
+```
+
+## Capa 02
+
+```{r}
+ggplot(data = iris) +
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width))
+```
+
+## Capa 03
+
+```{r}
+ggplot(data = iris) +
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  theme_minimal()
+```
+
+## Capa 04
+
+```{r}
+ggplot(data = iris) +
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  theme_minimal() +
+  labs(title = "Relación entre Longitud y Ancho del Sépalo")
+```
+
+## *The Grammar of Graphics*
+
+Como hemos podido ver, con cada nueva capa hemos incluido más y más elementos. Se asemeja a la forma de trabajar en `Matlab`, pero en líneas generales es un poco más ordenada.
+
+También tiene ventajas sobre el uso de la función `plot()`, al ser más flexible y permitir una mayor personalización, más ordenada y legible.
+
+# Ejemplos
+
+## Ejemplos
+
+A continuación vamos a ver algunos ejemplos de visualizaciones con `ggplot2`. En todos los casos partiremos del conjunto de datos `iris`, al que llamaremos `Data`.
+
+```{r}
+Data = iris
+```
+
+## Ejemplo 01 . Diagrama de dispersión
+
+Aquí le indicamos que el color debe ser distinto para cada especie.
+
+```{r, eval=FALSE}
+ggplot(data = Data) +
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species))
+```
+
+## Ejemplo 01 . Diagrama de dispersión
+
+```{r, echo=FALSE}
+ggplot(data = Data) +
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species))
+```
+
+## Ejemplo 02 - Etiquetas, título y tema
+
+```{r, eval=FALSE}
+ggplot(data = Data) +
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  theme_minimal() +
+  labs(title = "Relación entre Longitud y Ancho del Sépalo")
+```
+
+## Ejemplo 02 - Etiquetas, título y tema
+
+```{r, echo = FALSE}
+ggplot(data = Data) +
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  theme_minimal() +
+  labs(title = "Relación entre Longitud y Ancho del Sépalo")
+```
+
+## Ejemplo 03 - Histograma (1)
+
+```{r, eval=FALSE}
+ggplot(data = Data) +
+  geom_histogram(aes(x = Sepal.Length), color = "darkorchid4", bins = 30) +
+  theme_minimal() +
+  labs(title = "Distribución de la Longitud del Sépalo")
+```
+
+## Ejemplo 03 - Histograma (1)
+
+```{r, echo = FALSE}
+ggplot(data = Data) +
+  geom_histogram(aes(x = Sepal.Length), color = "darkorchid4", bins = 30) +
+  theme_minimal() +
+  labs(title = "Distribución de la Longitud del Sépalo")
+```
+
+## Ejemplo 04 - Histograma (2)
+
+```{r, eval=FALSE}
+ggplot(data = Data) +
+  geom_histogram(aes(x = Sepal.Length, fill = Species), bins = 30) +
+  theme_minimal() +
+  labs(title = "Distribución de la Longitud del Sépalo")
+```
+
+## Ejemplo 04 - Histograma (2)
+
+```{r, echo = FALSE}
+ggplot(data = Data) +
+  geom_histogram(aes(x = Sepal.Length, fill = Species), bins = 30) +
+  theme_minimal() +
+  labs(title = "Distribución de la Longitud del Sépalo")
+```
+
+## Ejemplo 05 - Histograma (3)
+
+Técnicamente es un gráfico de densidad, pero no deja de ser un superhistograma.
+
+```{r, eval=FALSE}
+ggplot(data = Data) +
+  geom_density(aes(x = Sepal.Length, fill = Species), alpha = 0.5) +
+  theme_minimal() +
+  labs(title = "Distribución de la Longitud del Sépalo")
+```
+
+## Ejemplo 05 - Histograma (3)
+
+```{r, echo = FALSE}
+ggplot(data = Data) +
+  geom_density(aes(x = Sepal.Length, fill = Species), alpha = 0.5) +
+  theme_minimal() +
+  labs(title = "Distribución de la Longitud del Sépalo")
+```
+
+## Ejemplo 06 - *Boxplot*
+
+Conocidos también como cajas y bigotes.
+
+```{r, eval=FALSE}
+ggplot(data = Data) +
+  geom_boxplot(aes(x = Species, y = Sepal.Length, fill = Species)) +
+  theme_minimal() +
+  labs(title = "Distribución de la Longitud del Sépalo")
+```
+
+## Ejemplo 06 - *Boxplot*
+
+```{r, echo = FALSE}
+ggplot(data = Data) +
+  geom_boxplot(aes(x = Species, y = Sepal.Length, fill = Species)) +
+  theme_minimal() +
+  labs(title = "Distribución de la Longitud del Sépalo")
+```
+
+## Ejemplo 07 - Violin plot
+
+Estos se usan a veces como alternativa para los *boxplots*.
+
+```{r, eval=FALSE}
+ggplot(data = Data) +
+  geom_violin(aes(x = Species, y = Sepal.Length, fill = Species)) +
+  theme_minimal() +
+  labs(title = "Distribución de la Longitud del Sépalo")
+```
+
+## Ejemplo 07 - Violin plot
+
+```{r, echo = FALSE}
+ggplot(data = Data) +
+  geom_violin(aes(x = Species, y = Sepal.Length, fill = Species)) +
+  theme_minimal() +
+  labs(title = "Distribución de la Longitud del Sépalo")
+```
+
+## Ejemplo 08 - Gráfico de barras
+
+En este caso lo combinamos con un `group_by` y un `summarise` para contar el número de observaciones por especie.
+
+```{r, eval=FALSE}
+Data %>% 
+  mutate(Long = ifelse(Sepal.Length > 5, "Sepal > 5", "Sepal <= 5")) %>%
+  group_by(Species, Long) %>%
+  summarise(n = n(), .groups = "drop") %>% 
+  ggplot(aes(x = Species, y = n, fill = Long)) +
+  geom_bar(stat = "identity", position = "dodge", color = "black")
+```
+
+## Ejemplo 08 - Gráfico de barras
+
+```{r, echo = FALSE}
+Data %>% 
+  mutate(Long = ifelse(Sepal.Length > 5, "Sepal > 5", "Sepal <= 5")) %>%
+  group_by(Species, Long) %>%
+  summarise(n = n(), .groups = "drop") %>% 
+  ggplot(aes(x = Species, y = n, fill = Long)) +
+  geom_bar(stat = "identity", position = "dodge", color = "black")
+```
+
+## Ejemplo 09 - Personalización extendida
+
+```{r, eval=FALSE}
+Data %>% 
+  mutate(Long = ifelse(Sepal.Length > 5, "Sepal > 5", "Sepal <= 5")) %>%
+  group_by(Species, Long) %>%
+  summarise(n = n(), .groups = "drop") %>% 
+  ggplot(aes(x = Species, y = n, fill = Long)) +
+  geom_bar(stat = "identity", position = "dodge", color = "black") + 
+  theme_minimal() +
+  scale_fill_manual(values = c("skyblue", "orange")) + # Colores personalizados
+  labs(
+    title = "Distribución de Sepal.Length por especie y rango",
+    x = "Especie",
+    y = "Número de observaciones",
+    fill = "Categoría de Sepal.Length"
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"), # Centrar título
+    axis.text = element_text(size = 10),
+    legend.position = "top"
+  )
+```
+
+## Ejemplo 09 - Personalización extendida
+
+```{r, echo = FALSE}
+Data %>% 
+  mutate(Long = ifelse(Sepal.Length > 5, "Sepal > 5", "Sepal <= 5")) %>%
+  group_by(Species, Long) %>%
+  summarise(n = n(), .groups = "drop") %>% 
+  ggplot(aes(x = Species, y = n, fill = Long)) +
+  geom_bar(stat = "identity", position = "dodge", color = "black") + 
+  theme_minimal() +
+  scale_fill_manual(values = c("skyblue", "orange")) + # Colores personalizados
+  labs(
+    title = "Distribución de Sepal.Length por especie y rango",
+    x = "Especie",
+    y = "Número de observaciones",
+    fill = "Categoría de Sepal.Length"
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"), # Centrar título
+    axis.text = element_text(size = 10),
+    legend.position = "top"
+  )
+```
+
+# Últimas consideraciones
+
+## Últimas consideraciones
+
+- `ggplot2` es una librería muy potente y flexible.
+- El uso de este paquete está muy extendido en la comunidad de `R`.
+- Ciertos gráficos son muy fáciles de obtener, pero al llegar a cierto nivel de personalización, la cosa se complica.
+- Tanto para gráficos avanzados como sencillos puede ser muy útil usar una IA y decirle "mejora este gráfico", "dime qué está mal aquí" o "cambia el color de las escalas", dado que hay órdenes que es muy difícil emplear y más aún recordar.
+
+# Ejercicios
+
+## Ejercicios
+
+A continuación se proponen algunos ejercicios con `ggplot2`, pensados para aparecer en varias diapositivas, y poder hacer luego una breve presentación con los gráficos obtenidos, indicando el significado de cada uno.
+
+> **Nota**: Lo ideal es que no uséis demasiado vuestras IAs en estos apartados, dado que el objetivo es practicar la visualización **artesanal** de datos con `ggplot2`.
+
+**Ayudas**:
+
+- La ayuda desde RStudio, a la derecha del editor.
+- La [documentación de `ggplot2`](https://ggplot2.tidyverse.org/index.html), en español.
+- La [hoja de referencia (*cheatsheet*) de `ggplot2`](https://rstudio.github.io/cheatsheets/html/data-visualization.html), a la derecha en el enlace, en varios idiomas.
+
+## Preparación
+
+Empezamos cargando los datos con el paquete `readr`, como ya vimos:
+
+```{r}
+Data = iris # FIXME: Cambiar por tus datos
+```
+
+## Visualización sin `ggplot2`
+
+> **Enunciado**: Emplea una de las funciones que hemos visto anteriormente para mostrar un resumen de los datos.
+
+```{r}
+
+```
+
+## Diagrama de dispersión
+
+> **Enunciado**: Emplea `geom_point()` para crear un diagrama de dispersión con los datos de `Data`.
+
+```{r}
+
+```
+
+## Diagrama de dispersión mejorado
+
+> **Enunciado**: Modifica el gráfico anterior para que los puntos se coloreen según la especie de flor. Incluye, además, una leyenda, y modifica el tamaño de los puntos y la escala de los ejes.
+
+```{r}
+
+```
+
+## Diagrama de barras
+
+> **Enunciado**: Crea un diagrama de barras con los valores de una variable categórica de `Data`.
+
+```{r}
+
+```
+
+## Tartáfico (gráfico circular)
+
+> **Enunciado**: Crea un gráfico circular con los valores de una variable categórica de `Data`. 
+
+```{r}
+
+```
+
+## Histograma
+
+> **Enunciado**: Crea un histograma con los valores de una variable numérica de `Data`.
+
+```{r}
+
+```
+
+## Otro gráfico
+
+> **Enunciado**: Busca en [la hoja de referencia de `ggplot2`](https://rstudio.github.io/cheatsheets/html/data-visualization.html) un gráfico que te llame la atención y que no hayamos usado y crea uno con los datos de `Data`.
+
+```{r}
+
+```
+
+# Ejercicios avanzados
+
+## Ejercicios avanzados
+
+Incluyo esta sección para que veáis realmente todo el jugo que se le puede sacar a `ggplot2`.
+
+## Facetas
+
+Las facetas son una forma de dividir un gráfico en subgráficos, según los valores de una variable categórica. Nos permiten hacer representaciones que habitualmente son **una locura**.
+
+> **Enunciado**: Intenta usar la función `facet_wrap()` para dividir un gráfico en subgráficos según los valores de una variable categórica.
+
+```{r}
+
+```
+
+## Combinándolo con `dplyr`
+
+Vamos ahora a realizar algunos ejercicios recurriendo al paquete `dplyr`, que nos permitirá manipular los datos antes de visualizarlos.
+
+```{r, message=FALSE, warning=FALSE}
+library(dplyr)
+```
+
+## Ejercicio `dplyr` (1)
+
+> **Enunciado**: Cambia el nombre de las columnas de `Data` para que sean más descriptivas. A continuación, genera una nueva variable a partir de 2 o más anteriores con `mutate`. Realiza una visualización con `ggplot2` de los datos modificados, posiblemente incluyendo información sobre las variables originales.
+
+## Ejercicio `dplyr` (2)
+
+> **Enunciado**: Resume tus datos empleando `summarise` y crea un gráfico con `ggplot2` que muestre la información resumida. Puede serte útil `geom_tile()`.
+
+## Ejercicio final
+
+> **Enunciado**: Toma uno de los gráficos que hayas tomado y pregúntale a tu IA favorita formas de mejorarlo. Incluye a continuación tu código. ¿Qué ha hecho? ¿Lo ha hecho bien? ¿Se te ocurre alguna forma de mejorarlo?
+
+```{r}
+
+```
+
+# Notas sobre el formato del archivo
+
+## IOSlides
+
+Este archivo está en formato `ioslides`, que es un formato de presentación de R Markdown. Puedes cambiar el formato en el encabezado YAML, por ejemplo, a `html_document` para obtener un documento HTML.
+
+La ventaja de emplear `ioslides` es que puedes crear presentaciones interactivas y dinámicas, con la posibilidad de incluir gráficos, tablas y código ejecutable.
+
+También admite comentarios para el orador, como aparecen justo a continuación. Para activarlo, simplemente añade `notes: true` en el encabezado YAML. Luego, si accedes desde el navegador, tienes que pulsar la tecla `p` para ver las notas, y posiblemente tengas que añadir `?presentme=true` a la URL.
+
+<div class="notes">
+Esto es una nota para el orador. Puedes añadir información adicional aquí.
+</div>
+
