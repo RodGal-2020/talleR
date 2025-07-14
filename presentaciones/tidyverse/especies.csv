@@ -1,0 +1,17 @@
+Perteneciente.a, Grupo.cientifico, Grupo.comun, Especie.científico, Especie.comun, Endemicidad, PEZ.NO.PEZ, HACER.ESTUDIO, Nombre.comun
+Vertebrados,Reptilia,Reptiles,Testudo graeca,Tortuga Mora,No Endémica,No Pez,NO ESTUDIAR,
+Vertebrados,Anfibia,Anfibios,Alytes cisternasii,Sapo partero ibérico,No Endémica,No Pez,NO ESTUDIAR,
+Fauna,Invertebrata,Invertebrados,Polyommatus golgus,Niña de Sierra Nevada,No Endémica,No Pez,NO ESTUDIAR,
+Flora,Psilotaceae,Psilotáceas,Psilotum nudum,,Endémica,No Pez,NO ESTUDIAR,
+Vertebrados,Aves,Aves,Uria aalge,Arao común,No Endémica,No Pez,NO ESTUDIAR,
+Vertebrados,Peces,Peces,Acipenser sturio,Sollo,No Endémica,Pez,HACER ESTUDIO,Sollo
+Flora,Isoetaceae,Isoetáceas,Isoetes setaceum,,Subendémica,No Pez,NO ESTUDIAR,
+Vertebrados,Aves,Aves,Upupa epops,Abubilla,No Endémica,No Pez,NO ESTUDIAR,
+Flora,Psilotaceae,Psilotáceas,Psilotum nudum var. molesworthiae,,No Endémica,No Pez,NO ESTUDIAR,
+Fauna,Invertebrata,Invertebrados,Pinna nobilis,Nácar,No Endémica,No Pez,NO ESTUDIAR,
+Vertebrados,Peces,Peces,Anaecypris hispanica,Jarabugo,Endémica,Pez,ESTUDIAR MAS ADELANTE,
+Vertebrados,Peces,Peces,Cottus gobio,Cavilat,No Endémica,Pez,HACER ESTUDIO,Cavilat
+Flora,Isoetaceae,Isoetáceas,Isoetes durieui,,Subendémica,No Pez,NO ESTUDIAR,
+Vertebrados,Reptilia,Reptiles,Tarentola mauritanica,Salamanquesa común,No Endémica,No Pez,NO ESTUDIAR,
+Fauna,Invertebrata,Invertebrados,Patella ferruginea,Lapa ferrugínea,No Endémica,No Pez,NO ESTUDIAR,
+Vertebrados,Peces,Peces,Iberocypris palaciosi,Bogardilla,No Endémica,Pez,HACER ESTUDIO,Bogardilla

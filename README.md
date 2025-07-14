@@ -59,21 +59,6 @@ Se encuentra separado por carpetas, todas dentro de la carpeta `contenido/`.
 
 Este añadido está pensado específicamente para el curso impartido el 15/07/2025 en el Departamento de Ecuaciones Diferenciales y Análisis Numérico (EDAN) de la Universidad de Sevilla, codificado como `2025EDAN07`.
 
-- [ ] Modelos discretos
-	- [ ] Puntos de equilibrio
-	- [ ] Estabilidad
-	- [ ] Visualización
-		- [ ] Una condición inicial
-		- [ ] Varias condiciones iniciales
-- [ ] Modelos continuos
-	- [ ] Puntos de equilibrio
-	- [ ] Estabilidad
-	- [ ] Visualización
-		- [ ] Una condición inicial
-		- [ ] Varias condiciones iniciales
-- [ ] Modelo Lotka-Volterra
-	- [ ] Puntos de equilibrio
-	- [ ] Estabilidad
-	- [ ] Visualización
-		- [ ] Una condición inicial
-		- [ ] Varias condiciones iniciales
+- Modelos discretos
+- Modelos continuos
+- Modelo Lotka-Volterra

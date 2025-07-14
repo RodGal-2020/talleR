@@ -1,0 +1,286 @@
+---
+title: "Modelos matemáticos"
+subtitle: "Taller de R"
+author: "Xopre Rodríguez Gallego"
+date: "`r format(Sys.time(), '%d de %B de %Y')`"
+codification: "UTF-8"
+output:
+  rmdformats::material:
+    highlight: kate
+---
+
+# Introducción
+
+En este documento se presentan ejemplos de modelos matemáticos discretos y continuos, utilizando R para resolver ecuaciones y visualizar resultados.
+
+## Repaso
+
+### Modelo discreto
+
+$\begin{cases} x_{n+1} = f(x_n) \\ x_0 \ \text{dado} \end{cases}$
+
+### Modelo continuo
+
+$\begin{cases} y' = f(t,y) \\ y(0) \ \text{dado} \end{cases}$
+
+### Modelo Lotka-Volterra
+
+$\begin{cases} y_1' = f_1(y_1,y_2) \\ y_2' = f_2(y_1,y_2) \\ y(0) = (y_1(0), y_2(0)) \ \text{dado} \end{cases}$
+
+# Modelos discretos
+
+Definimos una función no lineal que depende de una constante `R`. Queremos estudiar el comportamiento de la iteración y encontrar sus puntos fijos.
+
+```{r}
+R = 2
+f = function (x)  R*x/sqrt(1 + x/5)
+```
+
+Para mostrarla ahora, de una forma sencilla, podemos emplear `curve()`, del paquete base `graphics`:
+
+```{r}
+curve(f(x), 0, 20, main = "Función f(x) y y = x")
+abline(0, 1, lty = "dashed", col = "red")
+```
+
+Definimos ahora una función auxiliar para obtener los puntos fijos:
+
+```{r}
+fx = function (x) f(x) - x
+```
+
+Calculamos las raíces (puntos fijos) con dos métodos distintos, usando el paquete `rootSolve` y el paquete `pracma`:
+
+```{r}
+library(pracma)
+xc = findzeros(fx, 0, 20)
+print(xc)
+```
+
+```{r}
+library(rootSolve)
+xc2 = uniroot.all(fx, c(0, 20))
+xc2
+```
+
+Comprobamos los valores obtenidos
+
+```{r}
+fx(xc2)
+fx(xc)
+```
+
+Analizamos la derivada en los puntos fijos para estudiar su estabilidad:
+
+```{r}
+library(Deriv)
+fx_prime = Deriv(f, "x")
+fx_prime
+fx_prime(xc2)
+```
+
+Podemos, además, comprobar los tipos:
+
+```{r}
+class(f)
+class(fx_prime)
+```
+
+Realizamos una simulación de la evolución de la población, para 14 instantes temporales:
+
+```{r}
+N = 14
+x = 1 # No hace falta x[1], aunque funciona
+for (i in 2:N) {
+  x[i] = f(x[i - 1])
+}
+cat("Para N = ", N, " se tiene x[", N, "] = ", x[N], sep = "")
+plot(x, type = 'o', col = "blue", main = "Iteración del modelo discreto")
+```
+
+# Modelos continuos
+
+Estudiamos un modelo continuo basado en una ecuación logística modificada. La función representa una tasa de cambio dependiente de la población `y`.
+
+```{r}
+f = function (y) -0.6*y*log(200 / (y + 50))
+curve(f, 0, 200)
+abline(h = 0, lty = "dashed", col = "red") # Nótese que deben ejecutarse a la vez
+
+xc = findzeros(f, 0, 200)
+xc
+```
+
+Comprobamos los resultados:
+
+```{r}
+f(xc)
+```
+Calculamos la derivada de la función para analizar la estabilidad de los puntos fijos:
+
+```{r}
+fy = Deriv(f, "y")
+fy(xc)
+```
+
+Ahora resolvemos numéricamente la ecuación usando `ode45`:
+
+```{r}
+f_ode = function(t, y) -0.6*y*log(200 / (y + 50)) # Mismo tipo de función
+sol = ode45(f_ode, t0 = 0, tfinal = 20, y0 = 1/250) # Sintaxis idéntica a Matlab
+sol
+```
+
+Como vemos, la solución es un objeto con dos componentes: `t` y `y`, que representan el tiempo y la población, respectivamente. Podemos visualizar la solución:
+
+```{r}
+plot(sol$t, sol$y, type = 'l', lwd = 2, col = "red",
+     main = "Solución del modelo continuo")
+points(sol$t, sol$y, pch = 20, col = "gray50")
+grid()
+```
+
+## Avanzado
+
+Podemos ahora repetir este procedimiento para varias condiciones iniciales, empleando un bucle `for`:
+
+```{r}
+plot(sol$t, sol$y, type = 'l', lwd = 2, col = "red") # Tenemos que incluir el inicial
+for (y0 in c(1/250, 1/100, 1/50, 1/10)) {
+  sol = ode45(f_ode, t0 = 0, tfinal = 20, y0 = y0)
+  lines(sol$t, sol$y, lwd = 2)
+}
+```
+
+# Modelo Lotka-Volterra
+
+Estudiamos un sistema clásico depredador-presa con términos logísticos. Primero buscamos los puntos de equilibrio.
+
+```{r}
+LVmodnt = function(y) {
+  dy1 = 0.1*(1 - y[1] / 100) - 0.01*y[2]
+  dy2 = -0.05*(1 - y[2] / 150) + 0.001*y[1]
+  c(dy1, dy2)
+}
+
+start_values <- c(y1 = 0, y2 = 0)
+solnt = multiroot(f = LVmodnt, start = start_values)$root
+solnt
+```
+
+Estudiamos ahora la estabilidad en los distintos puntos de equilibrio mediante la matriz Jacobiana y sus autovalores:
+
+```{r}
+LVmody = function(y) {
+  dy1 = 0.1*y[1]*(1 - y[1]/100) - 0.01*y[1]*y[2]
+  dy2 = -0.05*y[2]*(1 - y[2]/150) + 0.001*y[1]*y[2]
+  c(dy1, dy2)
+}
+
+eigJ1 = eigen(jacobian(LVmody, c(0, 0)))
+eigJ1
+
+eigJ2 = eigen(jacobian(LVmody, c(100, 0)))$values
+eigJ2
+
+eigJ3 = eigen(jacobian(LVmody, c(0, 150)))
+eigJ3
+
+eigJ4 = eigen(jacobian(LVmody, solnt))
+eigJ4
+```
+
+## Resolución del modelo Lotka-Volterra
+
+Definimos condiciones iniciales y resolvemos el sistema en el intervalo deseado:
+
+```{r}
+y0 = c(50, 15)
+tspan <- seq(0, 240, by = 2)
+
+LVmod = function(t, y) {
+  dy1 = 0.1*y[1]*(1 - y[1]/100) - 0.01*y[1]*y[2]
+  dy2 = -0.05*y[2]*(1 - y[2]/150) + 0.001*y[1]*y[2]
+  c(dy1, dy2)
+}
+
+sol = ode45(LVmod, 0, 250, y0)
+
+plot(sol$t, sol$y[, 1], type = 'l', ylim = c(0, 100), col = "darkgreen",
+     ylab = "Poblaciones", xlab = "Tiempo", main = "Dinámica Lotka-Volterra")
+lines(sol$t, sol$y[, 2], col = "darkred")
+grid()
+```
+
+# Mejora de la visualización con `ggplot2`
+
+Volvemos al modelo continuo pero usamos ahora `ggplot2` para una mejor visualización. Primero, definimos la función y resolvemos la ecuación diferencial:
+
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+f_ode = function(t, y) -0.6*y*log(200 / (y + 50))
+sol = ode45(f_ode, t0 = 0, tfinal = 20, y0 = 1/250) 
+sol
+
+sol %>% 
+  as_tibble() %>%
+  ggplot(aes(x = t, y = y)) +
+  geom_line(color = "red", size = 1) +
+  geom_point(color = "gray50") +
+  labs(title = "Solución del modelo continuo", x = "Tiempo", y = "Población") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+## Avanzado
+
+Necesitaremos algunas funciones auxiliares:
+
+```{r, message=FALSE, warning=FALSE}
+library(dplyr)
+library(purrr)
+library(tibble)
+
+library(ggplot2)
+```
+
+Podemos ahora repetir este procedimiento para varias condiciones iniciales, empleando un bucle `for` y guardando toda la información en el mismo `tibble`:
+
+```{r}
+f_ode <- function(t, y) -0.6 * y * log(200 / (y + 50))  # si no está definido aún
+
+# Valores iniciales y nombres
+y0s <- c(1/250, 1/100, 1/50, 1/10)
+y_names <- paste0("y0_", seq_along(y0s))
+
+# Lista vacía para almacenar data frames
+sol_list <- list()
+
+for (i in seq_along(y0s)) {
+  y0_val <- y0s[i]
+  nombre_curva <- y_names[i]
+  
+  new_sol <- ode45(f_ode, t0 = 0, tfinal = 20, y0 = y0_val) %>%
+    as_tibble() %>%
+    mutate(curva = nombre_curva)  # agregamos identificador
+  
+  sol_list[[i]] <- new_sol
+}
+
+# Unimos todas las soluciones en un solo data frame largo
+sol_df <- bind_rows(sol_list)
+sol_df %>% head()
+```
+
+```{r}
+ggplot(sol_df, aes(x = t, y = y, color = curva)) +
+  geom_line(size = 1.2) +
+  labs(title = "Soluciones para distintas condiciones iniciales",
+       x = "Tiempo", y = "y(t)") +
+  theme_minimal()
+```
+

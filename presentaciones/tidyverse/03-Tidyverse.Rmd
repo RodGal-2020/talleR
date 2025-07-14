@@ -42,15 +42,49 @@ vec %>%
 
 En general, todas las funciones del entorno `tidyverse` están diseñadas para trabajar con el operador tubería.
 
+## Ejemplo más elaborado
+
+Creamos un data frame de ejemplo
+
+```{r}
+df <- data.frame(
+  id = 1:5,
+  valor = c(10, 20, 30, 40, 50),
+  categoria = c("A", "B", "A", "B", "A")
+)
+```
+
+Realizamos una serie de operaciones sin el operador tubería, accediendo a diferentes elementos
+
+```{r}
+df_filtrado <- df[df$categoria == "A", ]
+df_sumado <- aggregate(valor ~ categoria, data = df_filtrado, FUN = sum)
+df_ordenado <- df_sumado[order(df_sumado$valor, decreasing = TRUE), ]
+```
+
+Y ahora con el operador tubería
+
+```{r}
+df_ordenado_tuberia <- df %>%
+  filter(categoria == "A") %>%
+  group_by(categoria) %>%
+  summarise(valor = sum(valor)) %>%
+  arrange(desc(valor))
+```
+
 # `readr`
+
+```{r}
+library(readr)
+```
 
 > **Resumen**: Con este paquete es posible leer archivos de texto plano, como CSV, TSV, o archivos de ancho fijo, de forma rápida y eficiente, guardándolos como `tibble`.
 
-Vamos a continuación a leer un archivo `nombre.csv` usando `tidyverse`:
+Vamos a continuación a leer un archivo `especies.csv` usando `tidyverse`:
 
-```{r, eval = FALSE}
+```{r}
 # Leemos el archivo
-datos <- read_csv("nombre.csv")
+datos <- read_csv("especies.csv")
 
 # Y mostramos los datos
 datos
@@ -82,64 +116,74 @@ Data = iris
 
 ```{r}
 Data %>% 
-  filter(Species == "setosa")
+  filter(Species == "setosa") %>%
+  head()
 ```
 
 ```{r}
 Data %>% 
-  filter(Species == "setosa" & Sepal.Length > 5)
+  filter(Species == "setosa" & Sepal.Length > 5) %>%
+  head()
 ```
 
 ## Selección
 
 ```{r}
 Data %>% 
-  select(Species, Sepal.Length)
+  select(Species, Sepal.Length) %>%
+  head()
 ```
 
 También puede ser negativa:
 
 ```{r}
 Data %>% 
-  select(-Species, -Sepal.Length)
+  select(-Species, -Sepal.Length) %>%
+  head()
 
 # Análogo a
 Data %>% 
-  select(-c(Species, Sepal.Length))
+  select(-c(Species, Sepal.Length)) %>%
+  head()
 ```
 
 ## Ordenación
 
 ```{r}
 Data %>% 
-  arrange(Sepal.Length)
+  arrange(Sepal.Length) %>%
+  head()
 ```
 
 También podemos reordenar las columnas con `relocate()`, aunque esto no suele ser necesario:
 
 ```{r}
 Data %>% 
-  relocate(Species, Sepal.Length)
+  relocate(Species, Sepal.Length) %>%
+  head()
 ```
 
 ## Agrupación
 
 ```{r}
 Data %>% 
-  group_by(Species)
+  group_by(Species) %>%
+  head()
 ```
 
 Desde ahora, todas las operaciones se realizarán sobre cada grupo, veamos un ejemplo con `slice_max()`, primero sin agrupar y luego agrupando:
 
 ```{r}
 Data %>% 
-  slice_max(Sepal.Length)
+  slice_max(Sepal.Length) %>%
+  head()
 ```
 
 ```{r}
 Data %>% 
   group_by(Species) %>% 
-  slice_max(Sepal.Length)
+  slice_max(Sepal.Length) %>%
+  head()
 ```
 
 ### Resumen
@@ -165,14 +209,15 @@ Usamos `mutate()` para obtener valores derivados, como diferencias entre columna
 
 ```{r}
 Data %>% 
-  mutate(Sepal.Width - Sepal.Length)
+  mutate(Sepal.Width - Sepal.Length) %>%
+  head()
 ```
 
 ```{r}
 Data %>% 
-  mutate(Diferencia = Sepal.Width - Sepal.Length)
+  mutate(Diferencia = Sepal.Width - Sepal.Length) %>%
+  head()
 ```
-
 
 # Ejercicios
 
