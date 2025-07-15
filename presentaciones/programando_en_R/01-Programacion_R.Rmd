@@ -13,6 +13,25 @@ output:
 
 Este documento contiene ejemplos básicos comentados sobre cómo programar en R, desde la creación de variables hasta la visualización de datos. Está diseñado para ayudar a principiantes a entender la sintaxis y las estructuras comunes en R.
 
+# ¿Por qué R?
+
+- R es un lenguaje de programación y entorno de software para análisis estadístico y gráficos.
+- Es ampliamente utilizado en la comunidad académica y profesional para análisis de datos, visualización y modelado estadístico.
+- R es especialmente fuerte en la manipulación de datos y la creación de gráficos complejos.
+- Tiene una gran cantidad de paquetes disponibles para diversas tareas, desde análisis estadístico hasta aprendizaje automático.
+
+## R vs. RStudio
+
+R es el lenguaje de programación, mientras que RStudio es un entorno de desarrollo integrado (IDE) que facilita la escritura y ejecución de código en R. RStudio proporciona una interfaz amigable con herramientas para gestionar proyectos, visualizar datos y crear informes.
+
+## Interfaz de RStudio
+
+RStudio tiene varios paneles:
+
+- **Consola**: Donde se ejecuta el código R.
+- **Editor de scripts**: Para escribir y guardar scripts de R.
+- **Entorno/Historial**: Muestra las variables y el historial de comandos.
+
 # Comparativa con MATLAB y Python
 
 | Elemento         | R                       | Python                   | MATLAB                 |
@@ -21,6 +40,8 @@ Este documento contiene ejemplos básicos comentados sobre cómo programar en R,
 | Indexación       | `x[1]` (1-based)         | `x[0]` (0-based)         | `x(1)` (1-based)        |
 | Paquetes         | `library()`             | `import`                | `addpath`, `toolbox`   |
 | Gráficas         | `plot()`                 | `matplotlib.pyplot`      | `plot()`                |
+| Condicionales    | `if (x > 0) { ... }` | `if x > 0: ...`          | `if x > 0, ... end`     |
+| Bucles           | `for (i in 1:10) { ... }` | `for i in range(10): ...` | `for i = 1:10, ... end` |
 
 ---
 
@@ -32,15 +53,27 @@ x = 10         # Un número entero
 y = 3.14       # Un número decimal (tipo double)
 nombre = "Juan" # Una cadena de texto (string)
 logico = TRUE   # Un valor booleano (TRUE/FALSE)
+lista = list(a = 1, b = 2) # Una lista con elementos nombrados
 
 # Imprimir las variables
 print(y)
 print(x)
 print(nombre)
 print(logico)
+print(lista)
+print(lista$a)
 ```
 
 **Comentario:** R usa el operador `=` o `<-` para asignar valores.
+
+```{r}
+class(x)
+class(y)
+class(nombre)
+class(logico)
+class(lista)
+```
+
 
 # 2. Vectores
 
@@ -53,12 +86,12 @@ En R, todas las funciones están vectorizadas por defecto, y es una metodología
 
 ```{r}
 # Operaciones con vectores
-doble <- v * 2
-cuadrado <- v^2
+v * 2
+v^2
 
 # Acceder a elementos
-primero <- v[1]
-subconjunto <- v[2:4]
+v[1]
+v[2:4]
 ```
 
 # 3. Operaciones Básicas
@@ -93,8 +126,11 @@ v1[1:2] / v2
 
 En este caso para hacer el cálculo repite al vector `v2` una y otra vez.
 
+Como siempre, contamos con las funciones `length()` y `dim()` para conocer las dimensiones de los objetos.
+
 ```{r}
 length(v1)
+dim(data.frame(v1, v1)) # (v1 | v1)
 ```
 
 # 4. Funciones
@@ -109,7 +145,9 @@ cuadrado <- function(x) {
 cuadrado(4)
 ```
 
-## Alcance (Scope) de una Función
+## Alcance (*Scope*) de una Función
+
+Esta cuestión es delicada, pero importante. En R, las variables definidas dentro de una función no son accesibles fuera de ella, a menos que se devuelvan explícitamente.
 
 ```{r}
 mi_funcion <- function() {
@@ -121,7 +159,19 @@ mi_funcion()
 # print(local_var)  # Esto dará error: fuera del alcance
 ```
 
+De forma semejante, un objeto no definido en una función pero sí fuera de ella puede ser accesible dentro de la función.
+
+```{r}
+global_var <- 20
+mi_funcion_con_global <- function() {
+  return(global_var)
+}
+mi_funcion_con_global()
+```
+
 # 5. Matrices y Tablas
+
+Aunque sea posible generar matrices, lo más habitual es emplear `data.frames` o `tibbles` directamente para trabajar con datos tabulares.
 
 ```{r}
 # Matriz
@@ -153,6 +203,22 @@ nchar(cadena)       # Número de caracteres
 toupper(cadena)     # A mayúsculas
 ```
 
+En la práctica se emplearían las funciones del paquete `stringr` para un procesamiento más avanzado de texto.
+
+```{r}
+library(stringr)
+
+str_detect(cadena, "Mundo")  # Detectar si contiene "Mundo"
+str_replace(cadena, "Mundo", "R")  # Reemplazar "Mundo" por "R"
+```
+
+Admite también expresiones regulares, al igual que en Python.
+
+```{r}
+cadena_regex <- "Hola [A-Za-z]+"
+str_extract(cadena, cadena_regex)  # Extrae "Hola Mundo"
+```
+
 # 7. Condicionales
 
 ```{r}
@@ -182,10 +248,20 @@ if (x < 0) {
 
 ## Operadores lógicos
 
+Los operadores por defecto están vectorizados:
+
 ```{r}
 TRUE & FALSE  # AND
+TRUE & FALSE
 TRUE | FALSE  # OR
 !TRUE         # NOT
+```
+
+Pero existen también en su versión no vectorizada, que se emplea en condiciones:
+
+```{r}
+c(TRUE, FALSE) & c(FALSE, TRUE)  # AND vectorizado
+# c(TRUE, FALSE) && c(FALSE, TRUE)  # AND NO vectorizado (devuelve error)
 ```
 
 # 8. Bucles

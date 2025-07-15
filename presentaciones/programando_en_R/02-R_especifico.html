@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>RStudio y RMarkdown</title>
+  <title>R específico</title>
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
@@ -19,7 +19,7 @@
     var SLIDE_CONFIG = {
       // Slide settings
       settings: {
-                title: 'RStudio y RMarkdown',
+                title: 'R específico',
                         subtitle: 'Aprende R',
                 useBuilds: true,
         usePrettify: true,
@@ -3203,7 +3203,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">14 de julio de 2025</p>
+            <p style="margin-top: 6px; margin-left: -2px;">15 de julio de 2025</p>
           </hgroup>
   </slide>
 
@@ -3420,10 +3420,10 @@ summary(iris)</pre>
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2>Prueba estadística básica</h2></hgroup><article  id="prueba-estadística-básica">
+</article></slide><slide class=""><hgroup><h2>Prueba estadística básica (con <code>tidyverse</code>)</h2></hgroup><article  id="prueba-estadística-básica-con-tidyverse">
 
-<pre class = 'prettyprint lang-r'>setosa &lt;- iris$Sepal.Length[iris$Species == &quot;setosa&quot;]
-versicolor &lt;- iris$Sepal.Length[iris$Species == &quot;versicolor&quot;]
+<pre class = 'prettyprint lang-r'>setosa = iris %&gt;% filter(Species == &quot;setosa&quot;) %&gt;% pull(Sepal.Length)
+versicolor = iris %&gt;% filter(Species == &quot;versicolor&quot;) %&gt;% pull(Sepal.Length)
 
 t.test(setosa, versicolor)</pre>
 
@@ -3468,8 +3468,14 @@ summary(cars)
 <ul>
 <li>Documentación reproducible</li>
 <li>Integración de análisis y texto</li>
-<li>Automatización de reportes</li>
-</ul></article></slide>
+<li>Automatización de informes</li>
+</ul>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2><code>Tidyverse</code> y <code>Tidymodels</code></h2></hgroup><article  id="tidyverse-y-tidymodels">
+
+</article></slide><slide class=""><hgroup><h2><code>Tidyverse</code></h2></hgroup><article  id="tidyverse">
+
+<p>El <code>Tidyverse</code> es un conjunto de paquetes diseñados para la ciencia de datos en R. Incluye herramientas para manipulación, visualización y modelado de datos. Por su parte, <code>Tidymodels</code> es un conjunto de paquetes para modelado y <em>machine learning</em>.</p></article></slide>
 
 
   <slide class="backdrop"></slide>

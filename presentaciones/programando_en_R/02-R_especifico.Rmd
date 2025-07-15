@@ -1,5 +1,5 @@
 ---
-title: "RStudio y RMarkdown" 
+title: "R específico" 
 subtitle: "Aprende R" 
 author: "Xopre Rodríguez Gallego" 
 date: "`r format(Sys.time(), '%d de %B de %Y')`" 
@@ -52,11 +52,11 @@ glimpse(iris)
 skim(iris)
 ```
 
-## Prueba estadística básica
+## Prueba estadística básica (con `tidyverse`)
 
 ```{r}
-setosa <- iris$Sepal.Length[iris$Species == "setosa"]
-versicolor <- iris$Sepal.Length[iris$Species == "versicolor"]
+setosa = iris %>% filter(Species == "setosa") %>% pull(Sepal.Length)
+versicolor = iris %>% filter(Species == "versicolor") %>% pull(Sepal.Length)
 
 t.test(setosa, versicolor)
 ```
@@ -93,3 +93,9 @@ summary(cars)
 - Documentación reproducible
 - Integración de análisis y texto
 - Automatización de informes
+
+# `Tidyverse` y `Tidymodels`
+
+## `Tidyverse`
+
+El `Tidyverse` es un conjunto de paquetes diseñados para la ciencia de datos en R. Incluye herramientas para manipulación, visualización y modelado de datos. Por su parte, `Tidymodels` es un conjunto de paquetes para modelado y *machine learning*.

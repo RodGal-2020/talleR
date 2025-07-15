@@ -249,9 +249,7 @@ Recurriendo a cualquiera de los siguientes recursos obtén una o más representa
 - [La hoja de referencia de ggplot2](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization-2.1.pdf).
 - [Estos ejemplos de representaciones](https://r-graph-gallery.com/ggplot2-package.html)
   
-En la próxima sesión veremos cómo se puede emplear en profundidad este paquete para obtener visualizaciones **alucinantes**.  
-  
-Veamos un ejemplo de ggplot2 combinado con el uso de filter y summarise de dplyr:
+Veamos, para concluir, un ejemplo de ggplot2 combinado con el uso de filter y summarise de dplyr:
 
 ```{r}
 Data %>%
