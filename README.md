@@ -45,15 +45,15 @@ Se encuentra separado por carpetas, todas dentro de la carpeta `contenido/`.
 - Pensado para 4 horas de clase únicamente, empleando un CSV con datos reales
 - Objetivos: Repetir y extender lo visto en Calc/Excel
 - Clase 1 (2h):
-	- [ ] Instalación de paquetes
-	- [ ] El operador tubería (`%>%`, o `|>`)
-	- [ ] Lectura con `readr`
-		- [ ] Lectura avanzada para una variable
-	- [ ] Limpieza con `dplyr` y comentar que existe `tidyr`
+	- Instalación de paquetes
+	- El operador tubería (`%>%`, o `|>`)
+	- Lectura con `readr`
+		- Lectura avanzada para una variable
+	- Limpieza con `dplyr` y comentar que existe `tidyr`
 - Clase 2 (2h):
-	- [ ] Manipulación de datos con `dplyr`
-	- [ ] Visualización con `ggplot2`
-	- [ ] Siguientes pasos en `tidyverse`: `forcats`, `stringr`, `lubridate`
+	- Manipulación de datos con `dplyr`
+	- Visualización con `ggplot2`
+	- Siguientes pasos en `tidyverse`: `forcats`, `stringr`, `lubridate`
 
 ### `modelos_matematicos/`
 
