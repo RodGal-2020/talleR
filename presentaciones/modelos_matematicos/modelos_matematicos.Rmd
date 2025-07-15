@@ -39,6 +39,10 @@ f = function (x)  R*x/sqrt(1 + x/5)
 Para mostrarla ahora, de una forma sencilla, podemos emplear `curve()`, del paquete base `graphics`:
 
 ```{r}
+x_span = 0:20
+y = f(x_span)
+plot(x_span, y)
+
 curve(f(x), 0, 20, main = "Función f(x) y y = x")
 abline(0, 1, lty = "dashed", col = "red")
 ```
@@ -119,6 +123,7 @@ f(xc)
 Calculamos la derivada de la función para analizar la estabilidad de los puntos fijos:
 
 ```{r}
+Deriv(f) # Parece que se puede omitir
 fy = Deriv(f, "y")
 fy(xc)
 ```
@@ -224,7 +229,7 @@ library(ggplot2)
 ```{r}
 f_ode = function(t, y) -0.6*y*log(200 / (y + 50))
 sol = ode45(f_ode, t0 = 0, tfinal = 20, y0 = 1/250) 
-sol
+# plot(sol$t, sol$y)
 
 sol %>% 
   as_tibble() %>%

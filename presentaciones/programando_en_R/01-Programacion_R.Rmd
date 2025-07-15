@@ -56,6 +56,7 @@ logico = TRUE   # Un valor booleano (TRUE/FALSE)
 lista = list(a = 1, b = 2) # Una lista con elementos nombrados
 
 # Imprimir las variables
+y
 print(y)
 print(x)
 print(nombre)
@@ -105,6 +106,11 @@ suma = a + b
 resta = a - b
 producto = a * b
 division = a / b
+
+suma
+resta
+producto
+division
 ```
 
 Si ahora usamos vectores, obtenemos resultados semejantes:
@@ -130,19 +136,42 @@ Como siempre, contamos con las funciones `length()` y `dim()` para conocer las d
 
 ```{r}
 length(v1)
-dim(data.frame(v1, v1)) # (v1 | v1)
+df = data.frame(v1, v1)
+as.matrix(df)
+matrix(v1, nrow=2, ncol=3, byrow = 1)
+dim(df) # (v1 | v1)
 ```
 
 # 4. Funciones
 
 ```{r}
 # Definición de una función
-cuadrado <- function(x) {
+cuadrado = function(x) {
   return(x^2)
 }
 
+cuadrado <- function(x) x^2 # Lambda función?
+
 # Uso
 cuadrado(4)
+
+cuadrado_y_suma = function(x) {
+  cuadrado = x^2
+  suma = x+x
+  otro = list(a = 1, b = 2)
+  salida = list(cuadrado, suma, otro)
+  return(salida)
+}
+cuadrado_y_suma(4)
+```
+
+
+```{r}
+a = function(x,y) {
+  return(x+y)
+}
+
+a(1,2)
 ```
 
 ## Alcance (*Scope*) de una Función
@@ -207,7 +236,8 @@ En la práctica se emplearían las funciones del paquete `stringr` para un proce
 
 ```{r}
 library(stringr)
-
+# library(tictoc)
+# install.packages("tictoc")  # Si no está instalado
 str_detect(cadena, "Mundo")  # Detectar si contiene "Mundo"
 str_replace(cadena, "Mundo", "R")  # Reemplazar "Mundo" por "R"
 ```
@@ -252,7 +282,6 @@ Los operadores por defecto están vectorizados:
 
 ```{r}
 TRUE & FALSE  # AND
-TRUE & FALSE
 TRUE | FALSE  # OR
 !TRUE         # NOT
 ```
